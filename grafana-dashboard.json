@@ -1,0 +1,26 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "panels": [
+    {
+      "type": "graph",
+      "title": "p95 latency",
+      "targets": [
+        {
+          "query": "SELECT percentile(\"response_time\", 95) FROM locust"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Requests per second",
+      "targets": [
+        {
+          "query": "SELECT sum(\"requests\") FROM locust GROUP BY time(1s)"
+        }
+      ]
+    }
+  ],
+  "title": "Locust Basic Metrics"
+}

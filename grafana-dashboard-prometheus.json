@@ -1,0 +1,41 @@
+{
+  "title": "Locust Metrics - Prometheus",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "p95 Latency (ms)",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(locust_request_duration_seconds_bucket[1m])) by (le))"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Requests per Second",
+      "targets": [
+        {
+          "expr": "sum(rate(locust_requests_total[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Failure Rate (%)",
+      "targets": [
+        {
+          "expr": "100 * sum(rate(locust_failures_total[1m])) / sum(rate(locust_requests_total[1m]))"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Concurrent Users",
+      "targets": [
+        {
+          "expr": "sum(locust_user_count)"
+        }
+      ]
+    }
+  ]
+}

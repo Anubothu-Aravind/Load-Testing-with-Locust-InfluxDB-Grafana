@@ -1,0 +1,39 @@
+services:
+  influx:
+    image: influxdb:1.8
+    container_name: influx
+    volumes:
+      - influxdb:/var/lib/influxdb
+    ports:
+      - "8086:8086"
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - influx
+    ports:
+      - "3000:3000"
+
+  locust-master:
+    image: locustio/locust
+    command: locust -f /mnt/locust/locustfiles/locustfile_step.py --master --host=https://staging.opptym.com
+    volumes:
+      - ./:/mnt/locust
+    ports:
+      - "8089:8089"
+    depends_on:
+      - influx
+
+  locust-worker:
+    image: locustio/locust
+    command: locust -f /mnt/locust/locustfiles/locustfile_step.py --worker --master-host locust-master
+    volumes:
+      - ./:/mnt/locust
+    depends_on:
+      - locust-master
+
+volumes:
+  influxdb:

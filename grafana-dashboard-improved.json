@@ -1,0 +1,59 @@
+{
+  "title": "Locust Metrics - Improved (Influx)",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "p50 Latency (ms)",
+      "targets": [
+        {
+          "query": "SELECT percentile(\"response_time\", 50) FROM locust"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "p95 Latency (ms)",
+      "targets": [
+        {
+          "query": "SELECT percentile(\"response_time\", 95) FROM locust"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "p99 Latency (ms)",
+      "targets": [
+        {
+          "query": "SELECT percentile(\"response_time\", 99) FROM locust"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Requests per Second",
+      "targets": [
+        {
+          "query": "SELECT sum(\"requests\") FROM locust GROUP BY time(1s)"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Failure Rate (%)",
+      "targets": [
+        {
+          "query": "SELECT 100.0 * sum(\"failures\") / sum(\"requests\") FROM locust"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Concurrent Users",
+      "targets": [
+        {
+          "query": "SELECT max(\"user_count\") FROM locust_status"
+        }
+      ]
+    }
+  ]
+}

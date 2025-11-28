@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+  grafana:
+    image: grafana/grafana:9.0
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+  locust-master:
+    image: locustio/locust
+    command: locust -f /mnt/locust/locustfiles/locustfile_step.py --master --host=https://staging.opptym.com
+    volumes:
+      - ./:/mnt/locust
+    ports:
+      - "8089:8089"
+volumes:
+  prometheus_data:
